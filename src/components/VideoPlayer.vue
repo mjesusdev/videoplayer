@@ -2,9 +2,10 @@
     <div class="container-xxl">
       <div class="row justify-content-center">
         <div class="col-12 col-auto mt-2 player">
-          <video ref="video" src="../assets/lofi.mp4" muted></video>
+          <video id="video" ref="video" src="../assets/lofi.mp4" muted></video>
           <h2 class="player-title text-light">Música para programar</h2>
           <div class="player-actions">
+            <!-- <input type="hidden" ref="durationVideo" v-model="video.duration"> -->
             <button class="button btn" id="backward" @click="onBackward">
               <vue-feather type="skip-back" title="Retroceder 10 segundos" />    
             </button>
@@ -41,6 +42,7 @@
         const hidden   = ref(false)
         const progress = ref(null)
         const video    = ref(null)
+        const duration = ref(null)
 
         const onBackward = () => {
           video.value.currentTime = video.value.currentTime - 10;
@@ -48,6 +50,11 @@
         const onPlay = () => {
           video.value.play()
           hidden.value = true
+
+          // save duration of video
+          duration.value = video.value.duration;
+          progress.value.max = duration.value;
+
         }
         const onPause = () => {
           video.value.pause()
@@ -57,9 +64,9 @@
           video.value.currentTime = video.value.currentTime + 10;
         }
         const onLoaded = () => {
-          /* console.log(video);
-          console.log(video.value.duration); */
-          progress.value.max = video.value.duration;
+          progress.value = video.value.currentTime;
+          console.log(video.value.currentTime);
+        
         }
 
         onMounted ( () => {
